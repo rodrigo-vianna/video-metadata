@@ -1,0 +1,71 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+
+spring:
+  application:
+    name: video-metadata-service
+    
+  datasource:
+    url: jdbc:h2:mem:videodb
+    driverClassName: org.h2.Driver
+    username: sa
+    password: password
+    
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+      settings:
+        web-allow-others: true
+        
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create-drop
+    defer-datasource-initialization: true
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        
+  sql:
+    init:
+      mode: always
+      
+# JWT Configuration
+jwt:
+  secret-key: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+  expiration-time: 86400000 # 24 hours in milliseconds
+  
+# API Documentation
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operationsSorter: method
+    
+# Logging
+logging:
+  level:
+    com.goldmediatech.videometadata: DEBUG
+    org.springframework.security: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+  pattern:
+    console: "%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+    
+# External APIs Configuration (Mock endpoints)
+external:
+  apis:
+    video-providers:
+      youtube:
+        base-url: https://api.youtube.com/v3
+        api-key: mock-youtube-key
+      vimeo:
+        base-url: https://api.vimeo.com
+        api-key: mock-vimeo-key
+      internal:
+        base-url: http://localhost:8081/mock-video-api
